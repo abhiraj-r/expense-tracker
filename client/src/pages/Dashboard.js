@@ -20,9 +20,11 @@ import { formatCurrency, convertCurrency } from '../services/currencyService';
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Title);
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const downloadCSV = async (token) => {
   try {
-    const response = await fetch('http://localhost:5000/api/expenses/export/csv', {
+    const response = await fetch(`${API_BASE_URL}/api/expenses/export/csv`, {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (!response.ok) throw new Error('Failed to export CSV');
