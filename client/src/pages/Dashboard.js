@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Title } from 'chart.js';
 import { Pie, Line } from 'react-chartjs-2';
@@ -14,8 +14,7 @@ import {
 } from '../services/api';
 import './Dashboard.css';
 import { FaUser, FaChartBar, FaDownload, FaSearch, FaSyncAlt, FaEllipsisH, FaSun, FaMoon } from 'react-icons/fa';
-import ThemeToggle from '../components/ThemeToggle';
-import CurrencySelector, { currencies } from '../components/CurrencySelector';
+import CurrencySelector from '../components/CurrencySelector';
 import { formatCurrency, convertCurrency } from '../services/currencyService';
 
 // Register Chart.js components
@@ -112,51 +111,36 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    console.log('Dashboard useEffect - Token:', token ? 'Present' : 'Missing');
-    if (token) {
-      console.log('Fetching expenses...');
-      fetchExpenses();
-      fetchRecurringExpenses();
-    } else {
-      console.log('No token found, redirecting to login');
+  // Move fetchExpenses above useEffect and wrap in useCallback
+  const fetchExpenses = useCallback(async () => {
+    try {
+      console.log('Making getExpenses API call...');
+      const response = await getExpenses();
+      console.log('Expenses response:', response.data);
+      setExpenses(response.data);
+      // Clear editing state if the current editing expense no longer exists
+      if (editingExpense) {
+        const currentExpense = response.data.find(exp => exp._id === editingExpense._id);
+        if (!currentExpense) {
+          console.log('Editing expense no longer exists, clearing edit state');
+          setEditingExpense(null);
+        }
+      }
+    } catch (err) {
+      console.error('Fetch expenses error:', err);
+      if (err.response?.status === 401) {
+        console.log('401 error - removing token and redirecting');
+        localStorage.removeItem('token');
+        navigate('/');
+      } else {
+        setError('Failed to fetch expenses');
+      }
+    } finally {
       setLoading(false);
-      navigate('/');
     }
-  }, [navigate]);
+  }, [editingExpense, navigate]);
 
-  // Apply filters whenever expenses, searchTerm, categoryFilter, or dateFilter changes
-  useEffect(() => {
-    applyFilters();
-  }, [expenses, searchTerm, categoryFilter, dateFilter, sortBy, sortOrder]);
-
-  // Clear editing state when expenses change
-  useEffect(() => {
-    if (editingExpense) {
-      const currentExpense = expenses.find(exp => exp._id === editingExpense._id);
-      if (!currentExpense) {
-        setEditingExpense(null);
-      }
-    }
-  }, [expenses, editingExpense]);
-
-  // Close mobile menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (showMobileMenu && !event.target.closest('.mobile-menu-toggle') && !event.target.closest('.mobile-menu-dropdown')) {
-        setShowMobileMenu(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [showMobileMenu]);
-
-  // Fetch recurring expenses from API
-  const fetchRecurringExpenses = async () => {
+  const fetchRecurringExpenses = useCallback(async () => {
     try {
       const response = await getRecurringExpenses();
       setRecurringExpenses(response.data);
@@ -167,12 +151,9 @@ const Dashboard = () => {
         navigate('/');
       }
     }
-  };
+  }, [navigate]);
 
-  // Only fetch and display expenses from the backend
-  // (No local recurring expense generation)
-
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = [...expenses];
 
     // Search filter
@@ -248,22 +229,50 @@ const Dashboard = () => {
     });
 
     setFilteredExpenses(filtered);
-  };
+  }, [expenses, searchTerm, categoryFilter, dateFilter, sortBy, sortOrder]);
 
-  const clearFilters = () => {
-    setSearchTerm('');
-    setCategoryFilter('all');
-    setDateFilter('all');
-    setSortBy('date');
-    setSortOrder('desc');
-  };
+  // Update useEffect dependencies
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    console.log('Dashboard useEffect - Token:', token ? 'Present' : 'Missing');
+    if (token) {
+      console.log('Fetching expenses...');
+      fetchExpenses();
+      fetchRecurringExpenses();
+    } else {
+      console.log('No token found, redirecting to login');
+      setLoading(false);
+      navigate('/');
+    }
+  }, [navigate, fetchExpenses, fetchRecurringExpenses]);
 
-  const getTotalAmount = (expenseList) => {
-    return expenseList.reduce((total, expense) => {
-              const convertedAmount = convertCurrency(expense.amount, expense.currency || 'INR', defaultCurrency);
-      return total + convertedAmount;
-    }, 0);
-  };
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
+
+  // Clear editing state when expenses change
+  useEffect(() => {
+    if (editingExpense) {
+      const currentExpense = expenses.find(exp => exp._id === editingExpense._id);
+      if (!currentExpense) {
+        setEditingExpense(null);
+      }
+    }
+  }, [expenses, editingExpense]);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showMobileMenu && !event.target.closest('.mobile-menu-toggle') && !event.target.closest('.mobile-menu-dropdown')) {
+        setShowMobileMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showMobileMenu]);
 
   // Recurring expenses functions
   const handleAddRecurringExpense = async (e) => {
@@ -525,34 +534,6 @@ const Dashboard = () => {
       other: '#95a5a6'
     };
     return colors[category] || '#95a5a6';
-  };
-
-  const fetchExpenses = async () => {
-    try {
-      console.log('Making getExpenses API call...');
-      const response = await getExpenses();
-      console.log('Expenses response:', response.data);
-      setExpenses(response.data);
-      // Clear editing state if the current editing expense no longer exists
-      if (editingExpense) {
-        const currentExpense = response.data.find(exp => exp._id === editingExpense._id);
-        if (!currentExpense) {
-          console.log('Editing expense no longer exists, clearing edit state');
-          setEditingExpense(null);
-        }
-      }
-    } catch (err) {
-      console.error('Fetch expenses error:', err);
-      if (err.response?.status === 401) {
-        console.log('401 error - removing token and redirecting');
-        localStorage.removeItem('token');
-        navigate('/');
-      } else {
-        setError('Failed to fetch expenses');
-      }
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleAddExpense = async (e) => {

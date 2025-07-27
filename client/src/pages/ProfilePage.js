@@ -18,9 +18,9 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await getProfile();
-        setProfile(response.data);
-        setForm({ name: response.data.name, email: response.data.email, password: '', confirmPassword: '' });
+        const res = await getProfile();
+        setProfile(res.data);
+        setForm({ name: res.data.name, email: res.data.email, password: '', confirmPassword: '' });
       } catch (err) {
         setError('Failed to load profile');
       } finally {
