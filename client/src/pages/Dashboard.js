@@ -99,6 +99,23 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [showSearchModal, setShowSearchModal] = useState(false);
 
+  // Define getTotalAmount at the top level
+  const getTotalAmount = (expenseList) => {
+    return expenseList.reduce((total, expense) => {
+      const convertedAmount = convertCurrency(expense.amount, expense.currency || 'INR', defaultCurrency);
+      return total + convertedAmount;
+    }, 0);
+  };
+
+  // Define clearFilters at the top level
+  const clearFilters = () => {
+    setSearchTerm('');
+    setCategoryFilter('all');
+    setDateFilter('all');
+    setSortBy('date');
+    setSortOrder('desc');
+  };
+
   // Theme toggle function
   const toggleTheme = () => {
     const body = document.body;
