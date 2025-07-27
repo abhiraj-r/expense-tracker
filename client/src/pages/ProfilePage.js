@@ -47,7 +47,7 @@ const ProfilePage = () => {
     try {
       const payload = { name: form.name, email: form.email };
       if (form.password) payload.password = form.password;
-      const response = await updateProfile(payload);
+      await updateProfile(payload);
       setSuccess('Profile updated successfully!');
       setProfile({ ...profile, name: form.name, email: form.email });
       setForm({ ...form, password: '', confirmPassword: '' });
