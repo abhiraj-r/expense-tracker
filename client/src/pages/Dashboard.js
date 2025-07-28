@@ -90,7 +90,7 @@ const Dashboard = () => {
   const [newRecurringExpense, setNewRecurringExpense] = useState({
     description: '',
     amount: '',
-    category: 'Food',
+    category: 'Food', // Ensure this is capitalized
     frequency: 'monthly',
     startDate: '',
     endDate: '',
