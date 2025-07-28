@@ -10,6 +10,9 @@ const GENERATION_COOLDOWN = 600000; // 10 minutes cooldown
 // Add new expense
 exports.addExpense = async (req, res) => {
   try {
+    console.log('Add expense - Request body:', req.body);
+    console.log('Add expense - User ID:', req.user);
+    
     const { description, amount, category, date, currency } = req.body;
 
     const newExpense = new Expense({
@@ -21,10 +24,14 @@ exports.addExpense = async (req, res) => {
       date: date ? new Date(date) : new Date()
     });
 
+    console.log('Add expense - New expense object:', newExpense);
     await newExpense.save();
+    console.log('Add expense - Expense saved successfully');
     res.status(201).json(newExpense);
   } catch (err) {
-    res.status(500).json({ msg: 'Server error' });
+    console.error('Add expense error:', err.message);
+    console.error('Add expense error stack:', err.stack);
+    res.status(500).json({ msg: 'Server error', error: err.message });
   }
 };
 
