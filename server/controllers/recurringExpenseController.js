@@ -14,6 +14,9 @@ exports.getRecurringExpenses = async (req, res) => {
 // Add new recurring expense
 exports.addRecurringExpense = async (req, res) => {
   try {
+    console.log('Add recurring expense - Request body:', req.body);
+    console.log('Add recurring expense - User ID:', req.user);
+    
     const { description, amount, category, frequency, startDate, endDate, currency } = req.body;
 
     const newRecurringExpense = new RecurringExpense({
@@ -27,11 +30,14 @@ exports.addRecurringExpense = async (req, res) => {
       endDate: endDate ? new Date(endDate) : null
     });
 
+    console.log('Add recurring expense - New recurring expense object:', newRecurringExpense);
     await newRecurringExpense.save();
+    console.log('Add recurring expense - Recurring expense saved successfully');
     res.status(201).json(newRecurringExpense);
   } catch (err) {
-    console.error('Add recurring expense error:', err);
-    res.status(500).json({ msg: 'Server error' });
+    console.error('Add recurring expense error:', err.message);
+    console.error('Add recurring expense error stack:', err.stack);
+    res.status(500).json({ msg: 'Server error', error: err.message });
   }
 };
 
