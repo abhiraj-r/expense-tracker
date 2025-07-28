@@ -30,7 +30,9 @@ exports.register = async (req, res) => {
     const newUser = await User.create({ name, email, password: hashedPassword });
 
     // Create token
+    console.log('Login - JWT_SECRET:', JWT_SECRET ? 'Set' : 'Not set');
     const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: '7d' });
+    console.log('Login - Token created for user:', newUser._id);
 
     res.status(201).json({ 
       token, 
@@ -56,7 +58,9 @@ exports.login = async (req, res) => {
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 
     // Create token
+    console.log('Login - JWT_SECRET:', JWT_SECRET ? 'Set' : 'Not set');
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+    console.log('Login - Token created for user:', user._id);
 
     res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
   } catch (err) {
