@@ -46,10 +46,10 @@ app.use((req, res, next) => {
 });
 
 // MongoDB connection
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/expense-tracker';
+const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/expense-tracker';
 mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+  .catch(err => console.log('MongoDB connection error:', err.message));
 
 const PORT = process.env.PORT || 5000;
 
