@@ -64,6 +64,19 @@ html, body {
   gap: 1rem;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-icon {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
 .header-left h1 {
   margin: 0;
 }
@@ -1000,6 +1013,15 @@ html, body {
     padding-right: 3rem; /* Add padding to prevent overlap with mobile menu */
   }
 
+  .logo-container {
+    gap: 0.5rem;
+  }
+
+  .logo-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
   .dashboard-header h1 {
     font-size: 1.5rem;
   }
@@ -1179,6 +1201,10 @@ html, body {
 
 .dark-mode .dashboard-header h1 {
   color: #f8fafc;
+}
+
+.dark-mode .logo-icon {
+  filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.1));
 }
 
 .dark-mode .mobile-menu-dropdown {
