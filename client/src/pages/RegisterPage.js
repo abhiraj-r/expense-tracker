@@ -60,7 +60,11 @@ const RegisterPage = () => {
       navigate('/dashboard');
     } catch (err) {
       console.error('Register error:', err);
-      setError(err.response?.data?.msg || err.response?.data?.message || 'Registration failed. Please try again.');
+      console.error('Error response data:', err.response?.data);
+      console.error('Error response status:', err.response?.status);
+      const errorMessage = err.response?.data?.msg || err.response?.data?.message || 'Registration failed. Please try again.';
+      console.error('Setting error message:', errorMessage);
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
