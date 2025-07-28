@@ -656,7 +656,7 @@ const Dashboard = () => {
                         <header className="dashboard-header">
                   <div className="header-left">
                     <div className="logo-container">
-                      <img src="/wallet-icon.svg" alt="Expense Tracker Logo" className="logo-icon" />
+                      <img src={process.env.PUBLIC_URL + "/wallet-icon.svg"} alt="Expense Tracker Logo" className="logo-icon" />
                       <h1>Expense Tracker</h1>
                     </div>
                     <button className="icon-btn search-modal-btn" title="Search & Filter" onClick={() => setShowSearchModal(true)}><FaSearch /></button>
