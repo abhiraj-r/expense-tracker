@@ -1013,12 +1013,15 @@ const Dashboard = () => {
                   value={newRecurringExpense.category}
                   onChange={(e) => setNewRecurringExpense({ ...newRecurringExpense, category: e.target.value })}
                 >
-                  <option value="food">Food</option>
-                  <option value="transport">Transport</option>
-                  <option value="entertainment">Entertainment</option>
-                  <option value="shopping">Shopping</option>
-                  <option value="bills">Bills</option>
-                  <option value="other">Other</option>
+                  <option value="Food">Food</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Bills">Bills</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Education">Education</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Other">Other</option>
                 </select>
                 <select
                   value={newRecurringExpense.frequency}
@@ -1081,12 +1084,15 @@ const Dashboard = () => {
                   value={editForm.category}
                   onChange={handleEditChange}
                 >
-                  <option value="food">Food</option>
-                  <option value="transport">Transport</option>
-                  <option value="entertainment">Entertainment</option>
-                  <option value="shopping">Shopping</option>
-                  <option value="bills">Bills</option>
-                  <option value="other">Other</option>
+                  <option value="Food">Food</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Bills">Bills</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Education">Education</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Other">Other</option>
                 </select>
                 <input
                   type="date"
