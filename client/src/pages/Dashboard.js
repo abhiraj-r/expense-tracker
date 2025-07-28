@@ -545,12 +545,15 @@ const Dashboard = () => {
 
   const getCategoryColor = (category) => {
     const colors = {
-      food: '#e74c3c',
-      transport: '#3498db',
-      entertainment: '#9b59b6',
-      shopping: '#f39c12',
-      bills: '#2ecc71',
-      other: '#95a5a6'
+      Food: '#e74c3c',
+      Transport: '#3498db',
+      Entertainment: '#9b59b6',
+      Shopping: '#f39c12',
+      Bills: '#2ecc71',
+      Healthcare: '#e67e22',
+      Education: '#1abc9c',
+      Travel: '#34495e',
+      Other: '#95a5a6'
     };
     return colors[category] || '#95a5a6';
   };
@@ -861,12 +864,15 @@ const Dashboard = () => {
                     className="filter-select"
                   >
                     <option value="all">All Categories</option>
-                    <option value="food">Food</option>
-                    <option value="transport">Transport</option>
-                    <option value="entertainment">Entertainment</option>
-                    <option value="shopping">Shopping</option>
-                    <option value="bills">Bills</option>
-                    <option value="other">Other</option>
+                    <option value="Food">Food</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Bills">Bills</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Education">Education</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
 
@@ -952,12 +958,15 @@ const Dashboard = () => {
                   value={newExpense.category}
                   onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
                 >
-                  <option value="food">Food</option>
-                  <option value="transport">Transport</option>
-                  <option value="entertainment">Entertainment</option>
-                  <option value="shopping">Shopping</option>
-                  <option value="bills">Bills</option>
-                  <option value="other">Other</option>
+                  <option value="Food">Food</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Bills">Bills</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Education">Education</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Other">Other</option>
                 </select>
                 <input
                   type="date"

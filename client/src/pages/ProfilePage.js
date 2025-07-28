@@ -93,7 +93,7 @@ const ProfilePage = () => {
         <div className="profile-header">
           <button className="back-btn" onClick={() => navigate('/dashboard')}>
             <FaArrowLeft />
-            <span>Back to Dashboard</span>
+            <span>Back</span>
           </button>
           <h1>User Profile</h1>
         </div>
@@ -202,7 +202,7 @@ const ProfilePage = () => {
 
             <button type="submit" className="save-btn">
               <FaSave />
-              <span>Save Changes</span>
+              <span>Save</span>
             </button>
           </form>
 
