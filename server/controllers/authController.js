@@ -7,11 +7,21 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 // Signup
 exports.register = async (req, res) => {
   try {
+    console.log('Register request body:', req.body);
     const { name, email, password } = req.body;
+
+    // Validate required fields
+    if (!name || !email || !password) {
+      console.log('Missing required fields:', { name: !!name, email: !!email, password: !!password });
+      return res.status(400).json({ msg: 'All fields are required' });
+    }
 
     // Check if user exists
     const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ msg: 'User already exists' });
+    if (existingUser) {
+      console.log('User already exists:', email);
+      return res.status(400).json({ msg: 'User already exists' });
+    }
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
