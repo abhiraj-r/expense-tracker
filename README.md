@@ -1,14 +1,5 @@
-:5000/api/expenses:1   Failed to load resource: the server responded with a status of 401 (Unauthorized)
-:5000/api/expenses:1   Failed to load resource: the server responded with a status of 401 (Unauthorized)
-:5000/api/expenses:1   Failed to load resource: the server responded with a status of 401 (Unauthorized)
-:5000/api/expenses:1   Failed to load resource: the server responded with a status of 401 (Unauthorized)
-:5000/api/expenses:1   Failed to load resource: the server responded with a status of 401 (Unauthorized)
-:5000/api/expenses:1   Failed to load resource: the server responded with a status of 401 (Unauthorized)
-[NEW] Explain Console errors by using Copilot in Edge: click
-         
-         to explain an error. 
-        Learn more
-        Don't show again
+
+
 # Expense Tracker
 
 A full-stack expense tracking application built with React and Node.js.
